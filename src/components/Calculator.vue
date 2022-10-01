@@ -125,6 +125,8 @@ export default {
 		addOperator: function (operator) {
 			if (operator === "X") operator = '*'
 			this.operation = operator;
+
+			this.resetError();
 		},
 		evaluate: function () {
 
@@ -142,7 +144,13 @@ export default {
 				return false;
 			}
 
-			if (this.firstValue !== "" && this.operation !== "" && this.firstValue === "") {
+			if (this.firstValue !== "" && this.operation === null && this.secondValue === "") {
+				this.error = "Introduce un operador";
+				return false;
+			}
+
+
+			if (this.firstValue !== "" && this.operation !== null && this.secondValue === "") {
 				this.error = "Introduce el segundo número";
 				return false;
 			}
@@ -168,11 +176,13 @@ export default {
 		<Key v-for="key in this.keys" :class="key.class" @click="key.operation(key.value)">
 			<template #keyName>{{key.value}}</template>
 		</Key>
-		<Error v-if="hasErrors">
-			<template #keyName>
-				{{error}}
-			</template>
-		</Error>
+		<Transition>
+			<Error v-if="hasErrors">
+				<template #keyName>
+					{{error}}
+				</template>
+			</Error>
+		</Transition>
 	</div>
 </template>
 

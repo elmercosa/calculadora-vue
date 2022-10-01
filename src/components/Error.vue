@@ -1,5 +1,5 @@
 <template>
-  <div class="screen">
+  <div class="error">
     <span>
       <slot name="keyName"></slot>
     </span>
@@ -8,17 +8,27 @@
 
 
 <style scoped>
-.screen {
+.error {
   grid-column: 1/5;
-  background-color: white;
-  color: black;
+  background-color: #a2101c;
+  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 2rem;
   font-weight: bold;
   pointer-events: none;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out 0.3s;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: transform 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  transform: scale(0);
 }
 
 .minus {
