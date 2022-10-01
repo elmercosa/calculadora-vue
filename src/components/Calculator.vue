@@ -11,7 +11,89 @@ export default {
       secondValue: "",
       operation: null,
       result: "",
-      isResolved: false
+      isResolved: false,
+      keys: [
+        {
+          value: "C",
+          class: "bg-yellow text-black",
+          operation: this.clearValue
+        },
+        {
+          value: "/",
+          class: "bg-grey text-black",
+          operation: this.addOperator
+        },
+        {
+          value: "X",
+          class: "bg-grey text-black",
+          operation: this.addOperator
+        },
+        {
+          value: "-",
+          class: "minus bg-magenta text-black",
+          operation: this.addOperator
+        },
+        {
+          value: "1",
+          class: "",
+          operation: this.addValue
+        },
+        {
+          value: "2",
+          class: "",
+          operation: this.addValue
+        },
+        {
+          value: "3",
+          class: "",
+          operation: this.addValue
+        },
+        {
+          value: "4",
+          class: "",
+          operation: this.addValue
+        },
+        {
+          value: "5",
+          class: "",
+          operation: this.addValue
+        },
+        {
+          value: "6",
+          class: "",
+          operation: this.addValue
+        },
+        {
+          value: "+",
+          class: "plus bg-grey text-black",
+          operation: this.addOperator
+        },
+        {
+          value: "7",
+          class: "",
+          operation: this.addValue
+        },
+        {
+          value: "8",
+          class: "",
+          operation: this.addValue
+        },
+        {
+          value: "9",
+          class: "",
+          operation: this.addValue
+        },
+        {
+          value: "0",
+          class: "zero",
+          operation: this.addValue
+        },
+        {
+          value: "=",
+          class: "equal bg-magenta text-black",
+          operation: this.evaluate
+        },
+      ]
     }
   },
   methods: {
@@ -19,7 +101,7 @@ export default {
       if (this.isResolved) this.clearValue();
 
       value = value.toString();
-      
+
       if (this.operation == null) {
         this.firstValue += value;
       } else {
@@ -34,6 +116,7 @@ export default {
       this.isResolved = false;
     },
     addOperator: function (operator) {
+      if (operator === "X") operator = '*'
       this.operation = operator;
     },
     evaluate: function () {
@@ -47,55 +130,10 @@ export default {
 <template>
   <div class="layout">
     <Screen>
-      <template #keyName>{{firstValue}} {{operation}} {{secondValue}} = {{result}}</template>
+      <template #keyName>{{firstValue}} {{operation}} {{secondValue}} {{result ? '=': ''}} {{result}}</template>
     </Screen>
-    <Key class="bg-yellow text-black" @click="this.clearValue">
-      <template #keyName>C</template>
-    </Key>
-    <Key class="bg-grey text-black" @click="this.addOperator('/')">
-      <template #keyName>/</template>
-    </Key>
-    <Key class="bg-grey text-black" @click="this.addOperator('*')">
-      <template #keyName>X</template>
-    </Key>
-    <Key class="minus bg-magenta text-black" @click="this.addOperator('-')">
-      <template #keyName>-</template>
-    </Key>
-    <Key @click="this.addValue('1')">
-      <template #keyName>1</template>
-    </Key>
-    <Key @click="this.addValue('2')">
-      <template #keyName>2</template>
-    </Key>
-    <Key @click="this.addValue('3')">
-      <template #keyName>3</template>
-    </Key>
-    <Key @click="this.addValue('4')">
-      <template #keyName>4</template>
-    </Key>
-    <Key @click="this.addValue('5')">
-      <template #keyName>5</template>
-    </Key>
-    <Key @click="this.addValue('6')">
-      <template #keyName>6</template>
-    </Key>
-    <Key class="plus bg-grey text-black" @click="this.addOperator('+')">
-      <template #keyName>+</template>
-    </Key>
-    <Key @click="this.addValue('7')">
-      <template #keyName>7</template>
-    </Key>
-    <Key @click="this.addValue('8')">
-      <template #keyName>8</template>
-    </Key>
-    <Key @click="this.addValue('9')">
-      <template #keyName>9</template>
-    </Key>
-    <Key class="zero" @click="this.addValue('0')">
-      <template #keyName>0</template>
-    </Key>
-    <Key class="equal bg-magenta text-black" @click="this.evaluate">
-      <template #keyName>=</template>
+    <Key v-for="key in this.keys" :class="key.class" @click="key.operation(key.value)">
+      <template #keyName>{{key.value}}</template>
     </Key>
   </div>
 </template>
